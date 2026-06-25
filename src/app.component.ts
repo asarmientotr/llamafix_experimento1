@@ -4,16 +4,14 @@ import { CommonModule } from '@angular/common';
 interface Tecnico {
   id: number;
   nombre: string;
-  inicial: string;
   calificacion: number;
   trabajos: number;
-  respuesta: string;
-  aceptacion: number;
-  likes: number;
-  dislikes: number;
+  experiencia: number;
   precio: number;
+  fecha: string;
   horario: string;
-  verificado: boolean;
+  certificaciones: string[];
+  redes: string[];
   resenas: string[];
 }
 
@@ -43,31 +41,20 @@ interface Tecnico {
 
         <div class="card" *ngFor="let t of tecnicos">
           <div class="card-head">
-            <div class="avatar">{{ t.inicial }}</div>
+            <div class="avatar">
+              <svg viewBox="0 0 48 48" aria-hidden="true">
+                <rect width="48" height="48" fill="#d6d6d6"/>
+                <circle cx="24" cy="19" r="9" fill="#aeaeae"/>
+                <path d="M8 44c0-9 7-15 16-15s16 6 16 15z" fill="#aeaeae"/>
+              </svg>
+            </div>
             <div class="card-name">
-              <div class="name-row">
-                <span class="name">{{ t.nombre }}</span>
-                <span class="verif" *ngIf="t.verificado">✓ Verificado</span>
-              </div>
+              <span class="name">{{ t.nombre }}</span>
               <div class="rating">
                 <span class="star">★</span> {{ t.calificacion }}
                 <span class="sep">·</span> {{ t.trabajos }} trabajos
               </div>
-            </div>
-          </div>
-
-          <div class="metrics">
-            <div class="metric">
-              <span class="m-val">{{ t.respuesta }}</span>
-              <span class="m-lbl">Resp. promedio</span>
-            </div>
-            <div class="metric">
-              <span class="m-val">{{ t.aceptacion }}%</span>
-              <span class="m-lbl">Aceptación</span>
-            </div>
-            <div class="metric">
-              <span class="m-val">▲ {{ t.likes }} &nbsp; ▼ {{ t.dislikes }}</span>
-              <span class="m-lbl">Likes / Dislikes</span>
+              <div class="exp">{{ t.experiencia }} años de experiencia</div>
             </div>
           </div>
 
@@ -77,8 +64,8 @@ interface Tecnico {
               <span class="o-lbl">Precio propuesto</span>
             </div>
             <div class="offer-block">
-              <span class="o-val">{{ t.horario }}</span>
-              <span class="o-lbl">Horario propuesto</span>
+              <span class="o-val">{{ t.fecha }}</span>
+              <span class="o-lbl">{{ t.horario }}</span>
             </div>
           </div>
 
@@ -94,24 +81,48 @@ interface Tecnico {
         </div>
 
         <div class="profile-head">
-          <div class="avatar lg">{{ t.inicial }}</div>
+          <div class="avatar lg">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <rect width="64" height="64" fill="#d6d6d6"/>
+              <circle cx="32" cy="25" r="12" fill="#aeaeae"/>
+              <path d="M10 60c0-12 10-20 22-20s22 8 22 20z" fill="#aeaeae"/>
+            </svg>
+          </div>
           <div class="profile-name">{{ t.nombre }}</div>
-          <div class="verif-line" *ngIf="t.verificado">✓ Identidad verificada por RENIEC</div>
           <div class="rating big"><span class="star">★</span> {{ t.calificacion }} · {{ t.trabajos }} trabajos completados</div>
+          <div class="exp center">{{ t.experiencia }} años de experiencia</div>
         </div>
 
-        <div class="metrics profile-metrics">
-          <div class="metric">
-            <span class="m-val">{{ t.respuesta }}</span>
-            <span class="m-lbl">Resp. promedio</span>
+        <!-- Portafolio de trabajos anteriores -->
+        <div class="block">
+          <div class="block-lbl">Trabajos anteriores</div>
+          <div class="gallery">
+            <div class="gphoto" *ngFor="let g of [1,2,3]">
+              <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+                <rect width="100" height="100" fill="#e6e6e6"/>
+                <rect x="20" y="24" width="60" height="52" fill="#f2f2f2" stroke="#bdbdbd" stroke-width="2"/>
+                <rect x="28" y="34" width="20" height="42" fill="#dcdcdc"/>
+                <line x1="20" y1="76" x2="80" y2="76" stroke="#9a9a9a" stroke-width="3"/>
+              </svg>
+            </div>
           </div>
-          <div class="metric">
-            <span class="m-val">{{ t.aceptacion }}%</span>
-            <span class="m-lbl">Ratio de aceptación</span>
+        </div>
+
+        <!-- Redes sociales -->
+        <div class="block">
+          <div class="block-lbl">Redes sociales</div>
+          <div class="social-list">
+            <div class="social" *ngFor="let r of t.redes">
+              <span class="social-dot"></span>{{ r }}
+            </div>
           </div>
-          <div class="metric">
-            <span class="m-val">▲ {{ t.likes }} &nbsp; ▼ {{ t.dislikes }}</span>
-            <span class="m-lbl">Likes / Dislikes</span>
+        </div>
+
+        <!-- Documentación / certificaciones -->
+        <div class="block">
+          <div class="block-lbl">Documentación y certificaciones</div>
+          <div class="doc" *ngFor="let c of t.certificaciones">
+            <span class="doc-icon">▣</span>{{ c }}
           </div>
         </div>
 
@@ -121,8 +132,8 @@ interface Tecnico {
             <span class="o-lbl">Precio propuesto</span>
           </div>
           <div class="offer-block">
-            <span class="o-val">{{ t.horario }}</span>
-            <span class="o-lbl">Horario propuesto</span>
+            <span class="o-val">{{ t.fecha }}</span>
+            <span class="o-lbl">{{ t.horario }}</span>
           </div>
         </div>
 
@@ -156,8 +167,8 @@ interface Tecnico {
           </div>
           <div class="divider"></div>
           <div class="confirm-row">
-            <span class="c-lbl">Horario aceptado</span>
-            <span class="c-val">{{ t.horario }}</span>
+            <span class="c-lbl">Fecha y horario</span>
+            <span class="c-val">{{ t.fecha }} · {{ t.horario }}</span>
           </div>
         </div>
 
@@ -180,44 +191,29 @@ interface Tecnico {
   `,
   styles: [`
     :host {
-      display: flex;
-      justify-content: center;
-      background: #e9e9e9;
-      min-height: 100vh;
+      display: flex; justify-content: center;
+      background: #e9e9e9; min-height: 100vh;
       font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
       color: #1f1f1f;
     }
     .frame {
-      width: 100%;
-      max-width: 390px;
-      background: #fafafa;
-      min-height: 100vh;
-      box-shadow: 0 0 0 1px #d8d8d8;
+      width: 100%; max-width: 390px; background: #fafafa;
+      min-height: 100vh; box-shadow: 0 0 0 1px #d8d8d8;
     }
     .screen { padding: 16px 16px 40px; }
 
     .topbar {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      padding-bottom: 14px;
-      margin-bottom: 14px;
+      display: flex; flex-direction: column; gap: 2px;
+      padding-bottom: 14px; margin-bottom: 14px;
       border-bottom: 1px solid #dcdcdc;
-      position: relative;
     }
     .step { font-size: 11px; color: #8a8a8a; letter-spacing: .04em; text-transform: uppercase; }
     .title { font-size: 17px; font-weight: 600; }
-    .back {
-      background: none; border: none; padding: 0 0 4px;
-      font-size: 13px; color: #555; cursor: pointer; text-align: left;
-    }
+    .back { background: none; border: none; padding: 0 0 4px; font-size: 13px; color: #555; cursor: pointer; text-align: left; }
 
     .job {
-      background: #f0f0f0;
-      border: 1px solid #d8d8d8;
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 18px;
+      background: #f0f0f0; border: 1px solid #d8d8d8; border-radius: 8px;
+      padding: 12px; margin-bottom: 18px;
     }
     .job-label { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: #8a8a8a; margin-bottom: 4px; }
     .job-title { font-size: 14px; font-weight: 600; line-height: 1.35; margin-bottom: 8px; }
@@ -226,41 +222,24 @@ interface Tecnico {
     .list-label { font-size: 12px; color: #7a7a7a; margin-bottom: 10px; }
 
     .card {
-      border: 1px solid #d8d8d8;
-      border-radius: 10px;
-      background: #fff;
-      padding: 14px;
-      margin-bottom: 14px;
+      border: 1px solid #d8d8d8; border-radius: 10px; background: #fff;
+      padding: 14px; margin-bottom: 14px;
     }
-    .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
     .avatar {
-      width: 42px; height: 42px; border-radius: 50%;
-      background: #d0d0d0; color: #4a4a4a;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 600; font-size: 16px; flex-shrink: 0;
+      width: 48px; height: 48px; border-radius: 50%; overflow: hidden;
+      flex-shrink: 0; background: #d6d6d6;
     }
-    .avatar.lg { width: 64px; height: 64px; font-size: 24px; margin: 0 auto 10px; }
-    .card-name { flex: 1; min-width: 0; }
-    .name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .avatar svg { width: 100%; height: 100%; display: block; }
+    .avatar.lg { width: 72px; height: 72px; margin: 0 auto 10px; }
+    .card-name { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
     .name { font-size: 15px; font-weight: 600; }
-    .verif { font-size: 10px; color: #4a4a4a; border: 1px solid #bcbcbc; border-radius: 4px; padding: 1px 5px; }
-    .rating { font-size: 13px; color: #555; margin-top: 2px; }
+    .rating { font-size: 13px; color: #555; }
     .rating.big { font-size: 14px; }
     .star { color: #6b6b6b; }
     .sep { margin: 0 4px; color: #bbb; }
-
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      background: #f4f4f4;
-      border-radius: 8px;
-      padding: 10px 6px;
-      margin-bottom: 12px;
-    }
-    .metric { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; }
-    .m-val { font-size: 13px; font-weight: 600; }
-    .m-lbl { font-size: 9.5px; color: #8a8a8a; line-height: 1.2; }
+    .exp { font-size: 12.5px; color: #777; }
+    .exp.center { text-align: center; margin-top: 2px; }
 
     .offer { display: flex; gap: 10px; margin-bottom: 12px; }
     .offer-block {
@@ -271,9 +250,8 @@ interface Tecnico {
     .o-lbl { font-size: 10px; color: #8a8a8a; }
 
     .btn-outline {
-      width: 100%; padding: 10px; border: 1px solid #9a9a9a;
-      background: #fff; border-radius: 8px; font-size: 14px; font-weight: 500;
-      cursor: pointer; color: #1f1f1f;
+      width: 100%; padding: 10px; border: 1px solid #9a9a9a; background: #fff;
+      border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; color: #1f1f1f;
     }
     .btn-outline:active { background: #f0f0f0; }
     .btn-solid {
@@ -287,17 +265,33 @@ interface Tecnico {
       color: #777; font-size: 13px; cursor: pointer; margin-top: 4px;
     }
 
-    .profile-head { text-align: center; margin-bottom: 16px; }
+    .profile-head { text-align: center; margin-bottom: 18px; }
     .profile-name { font-size: 18px; font-weight: 600; }
-    .verif-line { font-size: 12px; color: #4a4a4a; margin: 4px 0; }
-    .profile-metrics { margin-bottom: 14px; }
-    .profile-offer { margin-bottom: 18px; }
+    .profile-offer { margin: 4px 0 18px; }
+
+    .block { margin-bottom: 18px; }
+    .block-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: #8a8a8a; margin-bottom: 8px; }
+
+    .gallery { display: flex; gap: 8px; }
+    .gphoto { flex: 1; }
+    .gphoto svg {
+      width: 100%; aspect-ratio: 1; border-radius: 8px;
+      border: 1px solid #d8d8d8; display: block;
+    }
+
+    .social-list { display: flex; flex-direction: column; gap: 7px; }
+    .social { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: #444; }
+    .social-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: #9a9a9a; flex-shrink: 0;
+    }
+
+    .doc { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: #444; padding: 4px 0; }
+    .doc-icon { color: #8a8a8a; }
 
     .reviews { margin-bottom: 20px; }
     .reviews-label { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
-    .review {
-      border-top: 1px solid #e4e4e4; padding: 10px 0;
-    }
+    .review { border-top: 1px solid #e4e4e4; padding: 10px 0; }
     .review .star { font-size: 11px; letter-spacing: 1px; }
     .review p { margin: 4px 0 0; font-size: 13px; color: #444; line-height: 1.4; }
 
@@ -305,9 +299,9 @@ interface Tecnico {
       border: 1px solid #d8d8d8; border-radius: 10px; background: #fff;
       padding: 4px 14px; margin-bottom: 16px;
     }
-    .confirm-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+    .confirm-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0; }
     .c-lbl { font-size: 13px; color: #7a7a7a; }
-    .c-val { font-size: 14px; font-weight: 600; }
+    .c-val { font-size: 14px; font-weight: 600; text-align: right; }
     .divider { height: 1px; background: #ececec; }
 
     .notice {
@@ -320,8 +314,7 @@ interface Tecnico {
     .check {
       width: 64px; height: 64px; border-radius: 50%;
       background: #2b2b2b; color: #fff; font-size: 30px;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 18px;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;
     }
     .end-title { font-size: 18px; font-weight: 600; }
     .end-sub { font-size: 13px; color: #8a8a8a; margin: 6px 0 24px; }
@@ -333,10 +326,11 @@ export class AppComponent {
 
   tecnicos: Tecnico[] = [
     {
-      id: 1, nombre: 'Carlos Ramírez', inicial: 'CR',
-      calificacion: 4.8, trabajos: 47, respuesta: '15 min', aceptacion: 92,
-      likes: 132, dislikes: 4, precio: 130, horario: 'Sábado 9:00 a.m.',
-      verificado: true,
+      id: 1, nombre: 'Carlos Ramírez',
+      calificacion: 4.8, trabajos: 47, experiencia: 8,
+      precio: 130, fecha: 'Sáb 28 jun', horario: '9:00 a.m.',
+      certificaciones: ['Constancia SENATI - Carpintería', 'Certificado de instalación de melamina'],
+      redes: ['Instagram · @carlos.carpinteria', 'Facebook · Carpintería Ramírez'],
       resenas: [
         'Instaló la puerta en 2 horas y dejó todo limpio.',
         'Trabajo muy profesional y puntual.',
@@ -344,10 +338,11 @@ export class AppComponent {
       ]
     },
     {
-      id: 2, nombre: 'Luis Fernández', inicial: 'LF',
-      calificacion: 4.9, trabajos: 89, respuesta: '45 min', aceptacion: 98,
-      likes: 210, dislikes: 3, precio: 145, horario: 'Sábado 10:00 a.m.',
-      verificado: true,
+      id: 2, nombre: 'Luis Fernández',
+      calificacion: 4.9, trabajos: 89, experiencia: 12,
+      precio: 145, fecha: 'Sáb 28 jun', horario: '10:00 a.m.',
+      certificaciones: ['Constancia SENATI - Carpintería', 'Certificado en acabados de madera'],
+      redes: ['Instagram · @lf.acabados', 'TikTok · @luisfernandez.obras'],
       resenas: [
         'Instaló la puerta en 2 horas y dejó todo limpio.',
         'Trabajo muy profesional y puntual.',
@@ -355,10 +350,11 @@ export class AppComponent {
       ]
     },
     {
-      id: 3, nombre: 'Miguel Quispe', inicial: 'MQ',
-      calificacion: 4.5, trabajos: 23, respuesta: '5 min', aceptacion: 75,
-      likes: 40, dislikes: 12, precio: 110, horario: 'Sábado 11:00 a.m.',
-      verificado: true,
+      id: 3, nombre: 'Miguel Quispe',
+      calificacion: 4.5, trabajos: 23, experiencia: 4,
+      precio: 110, fecha: 'Dom 29 jun', horario: '11:00 a.m.',
+      certificaciones: ['Certificado técnico en carpintería'],
+      redes: ['Facebook · Miguel Quispe Servicios'],
       resenas: [
         'Instaló la puerta en 2 horas y dejó todo limpio.',
         'Trabajo muy profesional y puntual.',
@@ -372,4 +368,3 @@ export class AppComponent {
   confirmar() { this.pantalla.set(4); }
   reiniciar() { this.seleccionado.set(null); this.pantalla.set(1); }
 }
-
