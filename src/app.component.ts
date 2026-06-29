@@ -33,7 +33,6 @@ interface Tecnico {
           <div class="job-title">Instalación de puerta de melamina en dormitorio principal</div>
           <div class="job-meta">
             <span>Distrito: San Miguel</span>
-            <span>Precio base: S/120</span>
           </div>
         </div>
 
