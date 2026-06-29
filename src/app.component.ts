@@ -75,7 +75,7 @@ interface Tecnico {
         </div>
 
         <div class="profile-head">
-          <div class="avatar lg">{{ iniciales(t.nombre) }}</div>
+          <img class="avatar lg" [src]="imagenes(t.nombre)">
           <div class="profile-name">{{ t.nombre }}</div>
           <div class="rating big"><span class="star">★</span> {{ t.calificacion }} · {{ t.trabajos }} trabajos completados</div>
           <div class="exp center">{{ t.experiencia }} años de experiencia</div>
@@ -86,7 +86,7 @@ interface Tecnico {
           <div class="block-lbl">Trabajos anteriores</div>
           <div class="gallery">
             <div class="gphoto" *ngFor="let g of [1,2,3]">
-              <span class="gphoto-lbl">Foto del trabajo</span>
+              <img [src]="'assets/images/trabajo' + g + '.jpg'" class="gphoto-img">
             </div>
           </div>
         </div>
@@ -381,6 +381,22 @@ export class AppComponent {
       .slice(0, 2)
       .map(p => p.charAt(0).toUpperCase())
       .join('');
+  }
+
+  imagenes(nombre: string): string {
+    switch (nombre) {
+      case 'Carlos Ramírez':
+        return 'assets/images/rostro1.jpg';
+
+      case 'Luis Fernández':
+        return 'assets/images/rostro2.jpg';
+
+      case 'Miguel Quispe':
+        return 'assets/images/rostro3.jpg';
+
+      default:
+        return 'assets/images/rostro3.jpg';
+    }
   }
 
   tecnicos: Tecnico[] = [
